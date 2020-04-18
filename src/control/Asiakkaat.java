@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import beans.dao.Dao;
 import beans.Asiakas;
 
-@WebServlet("/asiakkaat")
+@WebServlet("/asiakkaat/*") //voi sis‰lt‰‰ alikansioita 
 public class Asiakkaat extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -24,8 +24,10 @@ public class Asiakkaat extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		System.out.println("Asiakkaat.doGet()"); //Testi toimiiko
+		String pathInfo = request.getPathInfo(); //Haetaan polkutiedot, esim. /jarkko
+		String hakusana = pathInfo.replace("/", "");
 		Dao dao = new Dao(); //Data access object
-		ArrayList<Asiakas> asiakkaat = dao.listaaKaikki();
+		ArrayList<Asiakas> asiakkaat = dao.listaaKaikki(hakusana);
 
 		String strJSON = new JSONObject().put("asiakkaat", asiakkaat).toString(); //Muutetaan JSONiksi
 		response.setContentType("application/json"); //M‰‰ritet‰‰n outputin tyypiksi JSON
