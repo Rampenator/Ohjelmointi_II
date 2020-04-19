@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import beans.Asiakas;
 
@@ -15,7 +16,7 @@ public class Dao {
 	private String sql;
 	private String db = "Myynti.sqlite";
 	
-	private Connection connect(){
+	private Connection connect(){ //Luodaan yhteys
     	Connection con = null;    	
     	String path = System.getProperty("catalina.base");    	
     	path = path.substring(0, path.indexOf(".metadata")).replace("\\", "/"); //Eclipsessa
@@ -31,10 +32,8 @@ public class Dao {
 	     }
 	     return con;
 	}
-
 	
 	public ArrayList<Asiakas> listaaKaikki() {
-		
 		ArrayList<Asiakas> asiakkaat= new ArrayList();
 		sql = "SELECT * FROM asiakkaat";
 		
@@ -63,7 +62,6 @@ public class Dao {
 		return asiakkaat;
 	}
 	public ArrayList<Asiakas> listaaKaikki(String hakusana) {
-		
 		ArrayList<Asiakas> asiakkaat= new ArrayList();
 		sql = "SELECT * FROM asiakkaat Where etunimi LIKE ? or sukunimi LIKE ? or puhelin LIKE ? or sposti LIKE ?";
 		
@@ -94,5 +92,41 @@ public class Dao {
 			e.printStackTrace();
 		}
 		return asiakkaat;
+	}
+	   
+	
+	public boolean lisaaAsiakas(Asiakas asiakas) {
+		boolean paluuArvo=true;
+		sql = "INSERT INTO asiakkaat (etunimi, sukunimi, puhelin, sposti) VALUES (?,?,?,?)";
+		try {
+			con = connect();
+			stmtPrep=con.prepareStatement(sql);
+			stmtPrep.setString(1, asiakas.getEtunimi());
+			stmtPrep.setString(2, asiakas.getSukunimi());
+			stmtPrep.setString(3, asiakas.getPuhelin());
+			stmtPrep.setString(4, asiakas.getSposti());
+			stmtPrep.executeUpdate();
+	        con.close();
+		}catch(  Exception e) {
+			e.printStackTrace();
+			paluuArvo=false;
+		}
+		return paluuArvo;
+	}
+	
+	public boolean poistaAsiakas(String sposti) {
+		boolean paluuArvo=true;
+		sql="DELETE FROM asiakkaat WHERE sposti=?";
+		try {
+			con = connect();
+			stmtPrep=con.prepareStatement(sql);
+			stmtPrep.setString(1,sposti);
+			stmtPrep.executeUpdate();
+			con.close();
+		}catch(  Exception e) {
+			e.printStackTrace();
+			paluuArvo=false;
+		}
+		return paluuArvo;
 	}
 }
