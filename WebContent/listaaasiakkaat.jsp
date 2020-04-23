@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <title>Asiakkaat</title>
 </head>
@@ -25,7 +25,7 @@
 	    	<th class="tg-0lax">Sukunimi</th>
 	    	<th class="tg-0lax">Puhelin</th>
 	    	<th class="tg-0lax">Sähköposti</th>
-	    	<th class="tg-0lax"></th>
+	    	<th class="tg-0lax">&nbsp;</th>
 	  	</tr>
 	</thead>
 	<tbody>	
@@ -60,26 +60,25 @@ function haeAsiakkaat() {
 		success:function(result) {//Funktio palauttaa tiedot json-objektina
 			$.each(result.asiakkaat, function(i, field) {
 				var htmlStr;
-			//	htmlStr+="<tr>";
-				htmlStr+="<tr id='rivi_"+field.sposti+"'>";
+				htmlStr+="<tr id='rivi_"+field.asiakas_id+"'>";
 				htmlStr+="<td>"+field.etunimi+"</td>";
 	        	htmlStr+="<td>"+field.sukunimi+"</td>";
 	        	htmlStr+="<td>"+field.puhelin+"</td>";
 	        	htmlStr+="<td>"+field.sposti+"</td>";
-	        	htmlStr+="<td><span class='poista' onclick=poista('"+field.sposti+"')>Poista</span></td>"; 
+	        	htmlStr+="<td><span class='poista' onclick=poista("+field.asiakas_id+",'"+field.etunimi+"','"+field.sukunimi+"')>Poista</span></td>"; 
 	        	htmlStr+="</tr>";
 	        	$("#testi tbody").append(htmlStr);
 		});
 	}});
 }
-function poista(sposti) {
-	if(confirm("Poista asiakas, jonka sähköposti on " + sposti +"?")){
-		$.ajax({url:"asiakkaat/"+sposti, type:"DELETE", dataType:"json", success:function(result) { //result on joko {"response:1"} tai {"response:0"}
+function poista(asiakas_id, etunimi, sukunimi){
+	if(confirm("Poista asiakas " + etunimi +" "+ sukunimi +"?")){	
+		$("#rivi_"+asiakas_id).css("background-color", "red"); //Värjätään poistetun asiakkaan rivi
+		$.ajax({url:"asiakkaat/"+asiakas_id, type:"DELETE", dataType:"json", success:function(result) { //result on joko {"response:1"} tai {"response:0"}
 	        if(result.response==0){
-	        	$("#ilmoitus").html("Asiakkaan.");
+	        	$("#ilmoitus").html("Asiakkaan poisto epäonnistui.");
 	        }else if(result.response==1){
-	        	$("#rivi_"+rekno).css("background-color", "red"); //Värjätään poistetun asiakkaan rivi
-	        	alert("Asiakkaan, jonka sähköposti on " + sposti +", poisto onnistui.");
+	        	alert("Asiakkaan " + etunimi +" "+ sukunimi +" poisto onnistui.");
 				haeAsiakkaat();        	
 			}
 	    }});

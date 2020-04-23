@@ -47,6 +47,7 @@ public class Dao {
 				if (rs!= null) { //Jos kysely onnistui
 					while (rs.next()) {
 						Asiakas asiakas = new Asiakas();
+						asiakas.setAsiakas_id(rs.getInt(1));
 						asiakas.setEtunimi(rs.getString(2));
 						asiakas.setSukunimi(rs.getString(3));
 						asiakas.setPuhelin(rs.getString(4));
@@ -79,6 +80,7 @@ public class Dao {
 				if (rs!= null) { //Jos kysely onnistui
 					while (rs.next()) {
 						Asiakas asiakas = new Asiakas();
+						asiakas.setAsiakas_id(rs.getInt(1));
 						asiakas.setEtunimi(rs.getString(2));
 						asiakas.setSukunimi(rs.getString(3));
 						asiakas.setPuhelin(rs.getString(4));
@@ -106,7 +108,8 @@ public class Dao {
 			stmtPrep.setString(3, asiakas.getPuhelin());
 			stmtPrep.setString(4, asiakas.getSposti());
 			stmtPrep.executeUpdate();
-	        con.close();
+			System.out.println("Uusin id on " + stmtPrep.getGeneratedKeys().getInt(1));
+			con.close();
 		}catch(  Exception e) {
 			e.printStackTrace();
 			paluuArvo=false;
@@ -114,19 +117,19 @@ public class Dao {
 		return paluuArvo;
 	}
 	
-	public boolean poistaAsiakas(String sposti) {
+	public boolean poistaAsiakas(int asiakas_id) {
 		boolean paluuArvo=true;
-		sql="DELETE FROM asiakkaat WHERE sposti=?";
+		sql="DELETE FROM asiakkaat WHERE asiakas_id=?";						  
 		try {
 			con = connect();
-			stmtPrep=con.prepareStatement(sql);
-			stmtPrep.setString(1,sposti);
+			stmtPrep=con.prepareStatement(sql); 
+			stmtPrep.setInt(1, asiakas_id);			
 			stmtPrep.executeUpdate();
-			con.close();
-		}catch(  Exception e) {
+	        con.close();
+		} catch (Exception e) {				
 			e.printStackTrace();
 			paluuArvo=false;
-		}
+		}				
 		return paluuArvo;
 	}
 }

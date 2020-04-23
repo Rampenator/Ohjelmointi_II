@@ -69,6 +69,7 @@ $(document).ready(function(){
 			sposti:  {
 				required: true,
 				minlength: 10,
+				email: true,
 				maxlength: 100
 			}	
 		},
@@ -91,13 +92,16 @@ $(document).ready(function(){
 			sposti: {
 				required: "Puuttuu",
 				minlength: "Liian lyhyt",
+				email: "Ei kelpaa", 
 				maxlength: "Liian pitk‰"
 			}
 		},			
 		submitHandler: function(form) {	
 			lisaaTiedot();
 		}		
-	}); 	
+	}); 
+	//Vied‰‰n kursori etunimi-kentt‰‰n sivun latauksen yhteydess‰
+	$("#etunimi").focus(); 
 });
 
 //Tehd‰‰n funktio asiakkaan lis‰‰mist‰ varten. Funktio kutsuu backin POST-metodia ja v‰litt‰‰ kutsun mukana
@@ -105,12 +109,14 @@ $(document).ready(function(){
 
 function lisaaTiedot(){	
 	var formJsonStr = formDataJsonStr($("#info").serializeArray()); //muutetaan lomakkeen tiedot json-stringiksi
-	$.ajax({url:"asiakkaat", data:formJsonStr, type:"POST", dataType:"json", success:function(result) { //result on joko {"response:1"} tai {"response:0"}       
+	$.ajax({url:"asiakkaat", data:formJsonStr, type:"POST", dataType:"json", success:function(result) {//result on joko {"response:1"} tai {"response:0"}
+		console.log(formJsonStr)
+		console.log(result)
 		if(result.response==0){
       	$("#Ilmoitus").html("Asiakkaan lis‰‰minen ep‰onnistui.");
-      }else if(result.response==1){			
+      }else if(result.response==1){	
+    	$("#etunimi", "#sukunimi", "#puhelin", "#sposti").val("");  
       	$("#Ilmoitus").html("Asiakkaan lis‰‰minen onnistui.");
-      	$("#etunimi", "#sukunimi", "#puhelin", "#sposti").val("");
 		}
   }});	
 }

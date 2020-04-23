@@ -2,8 +2,22 @@ package beans;
 
 public class Asiakas {
 	private String etunimi, sukunimi, puhelin, sposti;
+	private int asiakas_id;
 	
 	
+	public int getAsiakas_id() {
+		return asiakas_id;
+	}
+
+	public void setAsiakas_id(int asiakas_id) {
+		this.asiakas_id = asiakas_id;
+	}
+
+	public Asiakas(int asiakas_id) {
+		super();
+		this.asiakas_id = asiakas_id;
+	}
+
 	public Asiakas() {
 		super();
 	}
@@ -50,6 +64,7 @@ public class Asiakas {
 
 	@Override
 	public String toString() {
-		return "Asiakas [etunimi=" + etunimi + ", sukunimi=" + sukunimi + ", puhelin=" + puhelin + ", sposti=" + sposti + "]";
+		return "Asiakas [etunimi=" + etunimi + ", sukunimi=" + sukunimi + ", puhelin=" + puhelin + ", sposti=" + sposti
+				+ ", asiakas_id=" + asiakas_id + "]";
 	}
 }

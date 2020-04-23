@@ -39,9 +39,9 @@ public class Asiakkaat extends HttpServlet {
 		PrintWriter ulos = response.getWriter(); 
 		ulos.println(strJSON); //Kirjoittaa ulos strJSONin eli asiakkaat listan
 	}
-
+	//Asiakkaan lis‰‰minen
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		//doGet(request, response);
 		System.out.println("Asiakkaat.doPost()"); //Testi toimiiko
 		
 		JSONObject jsonObj = new JsonStrToObj().convert(request); //Otetaan vastaan Json string ja muutetaan se Json objectiksi
@@ -68,15 +68,16 @@ public class Asiakkaat extends HttpServlet {
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Asiakkaat.doDelete()"); //Testi toimiiko
 		String pathInfo = request.getPathInfo(); //Haetaan polkutiedot, esim. /jarkko
-		String poistettava_sposti = pathInfo.replace("/", "");
+		int asiakas_id = Integer.parseInt(pathInfo.replace("/", "")); //poistetaan polusta "/", j‰ljelle j‰‰ id, joka muutetaan int
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
 		Dao dao = new Dao();
-		if(dao.poistaAsiakas(poistettava_sposti)){ //metodi palauttaa true/false
-			out.println("{\"response\":1}");  //asiakkaan poistaminen onnistui {"response":1}
-		}else{
-			out.println("{\"response\":0}");  //asiakkaan poistaminen ep‰onnistui {"response":0}
-		}
+		if(dao.poistaAsiakas(asiakas_id)){ //metodi palauttaa true/false
+			out.println("{\"response\":1}"); //Asiakkaan poisto onnistui {"response":1}
+		}else {
+			out.println("{\"response\":0}"); //Asiakkaan poisto ep‰onnistui {"response":0}
+		}		
 	}
-	
+
 }
+
