@@ -25,7 +25,7 @@
 	    	<th class="tg-0lax">Sukunimi</th>
 	    	<th class="tg-0lax">Puhelin</th>
 	    	<th class="tg-0lax">Sähköposti</th>
-	    	<th class="tg-0lax">&nbsp;</th>
+	    	<th class="tg-0lax">Muuta/Poista</th>
 	  	</tr>
 	</thead>
 	<tbody>	
@@ -65,7 +65,8 @@ function haeAsiakkaat() {
 	        	htmlStr+="<td>"+field.sukunimi+"</td>";
 	        	htmlStr+="<td>"+field.puhelin+"</td>";
 	        	htmlStr+="<td>"+field.sposti+"</td>";
-	        	htmlStr+="<td><span class='poista' onclick=poista("+field.asiakas_id+",'"+field.etunimi+"','"+field.sukunimi+"')>Poista</span></td>"; 
+	        	htmlStr+="<td><a href='muutaasiakas.jsp?asiakas_id="+field.asiakas_id+"'>Muuta</a>&ensp;";
+	        	htmlStr+="<span class='poista' onclick=poista("+field.asiakas_id+",'"+field.etunimi+"','"+field.sukunimi+"')>Poista</span></td>"; 
 	        	htmlStr+="</tr>";
 	        	$("#testi tbody").append(htmlStr);
 		});

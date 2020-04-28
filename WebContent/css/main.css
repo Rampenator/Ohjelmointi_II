@@ -17,3 +17,8 @@
 	text-decoration: underline;
 	cursor: pointer;	
 }
+
+.hidden{
+	visibility:hidden;
+}
+
